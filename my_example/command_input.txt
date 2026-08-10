@@ -1,0 +1,10 @@
+Please stand up when this line is read.
+After waiting, please sit calmly.
+Now try the dance command.
+Next, use stand down to lower the robot.
+Finally, switch to normal mode.
+Start another cycle with stand up.
+Hold position briefly, then sit again.
+Run dance one more time.
+Prepare to rest with stand down.
+End the sequence safely with damp.
