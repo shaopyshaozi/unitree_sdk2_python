@@ -9,7 +9,7 @@ from unitree_sdk2py.go2.sport.sport_client import SportClient
 
 TOPIC_LOWSTATE = "rt/lowstate"
 ROTATE_SPEED = 0.3
-YAW_TOLERANCE_DEG = 5.0
+YAW_TOLERANCE_DEG = 1.0
 CONTROL_INTERVAL = 0.05
 MAX_ROTATE_TIME = 20.0
 
