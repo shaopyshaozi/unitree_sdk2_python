@@ -16,9 +16,7 @@ class TestOption:
 option_list = [
     TestOption(name="damp", id=0),         
     TestOption(name="stand up", id=1),     
-    TestOption(name="stand down", id=2),   
     TestOption(name="stop move", id=3),    
-    TestOption(name="recovery stand", id=4),     
     TestOption(name="balance stand", id=5),
     TestOption(name="forward", id=6),
     TestOption(name="backward", id=7),
@@ -46,6 +44,13 @@ def find_option_in_line(line):
     if not normalized_line or normalized_line.startswith("#"):
         return None
 
+    id_match = re.search(r"\bid\s*[:=]?\s*(\d+)\b", normalized_line)
+    if id_match:
+        input_id = int(id_match.group(1))
+        for option in option_list:
+            if option.id == input_id:
+                return option
+
     sorted_options = sorted(option_list, key=lambda option: len(normalize_line(option.name)), reverse=True)
 
     for option in sorted_options:
@@ -63,12 +68,8 @@ def execute_option(sport_client, test_option):
         code = sport_client.Damp()
     elif test_option.id == 1:
         code = sport_client.StandUp()
-    elif test_option.id == 2:
-        code = sport_client.StandDown()
     elif test_option.id == 3:
         code = sport_client.StopMove()
-    elif test_option.id == 4:
-        code = sport_client.RecoveryStand()
     elif test_option.id == 5:
         code = sport_client.BalanceStand()
     elif test_option.id == 6:

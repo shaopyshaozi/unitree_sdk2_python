@@ -1,15 +1,18 @@
-Please stand up when this line is read.
-This line is only narration and should not trigger anything.
-Now enter balance stand so velocity commands can work.
-Move forward for a short moment.
-Stop move before changing direction.
-The robot should ignore this random sentence.
-Turn left slowly.
-Stop move after the turn.
-Move backward briefly.
-Stop move again.
-Shift left carefully.
-Shift right carefully.
-Try recovery stand as a safe reset command.
-Prepare to rest with stand down.
-End the sequence safely with damp.
+Please stand up and get ready.
+This sentence should not trigger anything.
+Please enter balance stand before moving.
+Please move forward for a short moment.
+Please stop move before changing direction.
+This narration line has no robot action.
+Please move backward briefly.
+Please stop move and wait.
+Please shift left carefully.
+Please stop move after the side step.
+Please shift right carefully.
+Please stop move after returning.
+Please turn left slowly.
+Please stop move after the left turn.
+Please turn right slowly.
+Please stop move after the right turn.
+This final narration line should be skipped.
+Please enter damp mode now.
