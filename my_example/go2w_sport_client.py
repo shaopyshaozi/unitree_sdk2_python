@@ -1,11 +1,9 @@
 import time
 import sys
-from unitree_sdk2py.core.channel import ChannelSubscriber, ChannelFactoryInitialize
-from unitree_sdk2py.idl.default import unitree_go_msg_dds__SportModeState_
-from unitree_sdk2py.idl.unitree_go.msg.dds_ import SportModeState_
-from unitree_sdk2py.go2.sport.sport_client import SportClient
-import math
 from dataclasses import dataclass
+
+from unitree_sdk2py.core.channel import ChannelFactoryInitialize
+from unitree_sdk2py.go2.sport.sport_client import SportClient
 
 @dataclass
 class TestOption:
@@ -14,16 +12,28 @@ class TestOption:
 
 option_list = [
     TestOption(name="damp", id=0),         
-    TestOption(name="stand_up", id=1),     
-    TestOption(name="stand_down", id=2),   
-    TestOption(name="move", id=3),         
-    TestOption(name="stop_move", id=4),    
-    TestOption(name="speed_level", id=5),  
-    TestOption(name="switch_gait", id=6),  
-    TestOption(name="get_state", id=7),    
-    TestOption(name="recovery", id=8),     
-    TestOption(name="balance", id=9)       
+    TestOption(name="stand up", id=1),     
+    TestOption(name="stand down", id=2),   
+    TestOption(name="stop move", id=3),    
+    TestOption(name="recovery stand", id=4),     
+    TestOption(name="balance stand", id=5),
+    TestOption(name="forward", id=6),
+    TestOption(name="backward", id=7),
+    TestOption(name="left", id=8),
+    TestOption(name="right", id=9),
+    TestOption(name="turn left", id=10),
+    TestOption(name="turn right", id=11),
+    TestOption(name="speed low", id=12),
+    TestOption(name="speed medium", id=13),
+    TestOption(name="lean forward", id=14),
+    TestOption(name="lean back", id=15),
+    TestOption(name="level body", id=16),
 ]
+
+MOVE_SPEED = 0.2
+SIDE_SPEED = 0.2
+TURN_SPEED = 0.3
+PITCH_ANGLE = 0.15
 
 class UserInterface:
     def __init__(self):
@@ -36,7 +46,7 @@ class UserInterface:
             return None
 
     def terminal_handle(self):
-        input_str = input("Enter id or name: \n")
+        input_str = input("Enter id or name: \n").strip().lower().replace("_", " ")
 
         if input_str == "list":
             self.test_option_.name = None
@@ -52,7 +62,49 @@ class UserInterface:
                 print(f"Test: {self.test_option_.name}, test_id: {self.test_option_.id}")
                 return
 
+        self.test_option_.name = None
+        self.test_option_.id = None
         print("No matching test option found.")
+
+def execute_option(sport_client, test_option):
+    code = None
+
+    if test_option.id == 0:
+        code = sport_client.Damp()
+    elif test_option.id == 1:
+        code = sport_client.StandUp()
+    elif test_option.id == 2:
+        code = sport_client.StandDown()
+    elif test_option.id == 3:
+        code = sport_client.StopMove()
+    elif test_option.id == 4:
+        code = sport_client.RecoveryStand()
+    elif test_option.id == 5:
+        code = sport_client.BalanceStand()
+    elif test_option.id == 6:
+        code = sport_client.Move(MOVE_SPEED, 0, 0)
+    elif test_option.id == 7:
+        code = sport_client.Move(-MOVE_SPEED, 0, 0)
+    elif test_option.id == 8:
+        code = sport_client.Move(0, SIDE_SPEED, 0)
+    elif test_option.id == 9:
+        code = sport_client.Move(0, -SIDE_SPEED, 0)
+    elif test_option.id == 10:
+        code = sport_client.Move(0, 0, TURN_SPEED)
+    elif test_option.id == 11:
+        code = sport_client.Move(0, 0, -TURN_SPEED)
+    elif test_option.id == 12:
+        code = sport_client.SpeedLevel(0)
+    elif test_option.id == 13:
+        code = sport_client.SpeedLevel(1)
+    elif test_option.id == 14:
+        code = sport_client.Euler(0, PITCH_ANGLE, 0)
+    elif test_option.id == 15:
+        code = sport_client.Euler(0, -PITCH_ANGLE, 0)
+    elif test_option.id == 16:
+        code = sport_client.Euler(0, 0, 0)
+
+    print(f"Return code: {code}")
 
 if __name__ == "__main__":
     if len(sys.argv) < 2:
@@ -77,23 +129,7 @@ if __name__ == "__main__":
 
         print(f"Updated Test Option: Name = {test_option.name}, ID = {test_option.id}\n")
 
-        if test_option.id == 0:
-            sport_client.Damp()
-        elif test_option.id == 1:
-            sport_client.StandUp()
-        elif test_option.id == 2:
-            sport_client.StandDown()
-        elif test_option.id == 3:
-            sport_client.Move(0.5,0,0)
-        elif test_option.id == 4:
-            sport_client.StopMove()
-        elif test_option.id == 5:
-            sport_client.SpeedLevel(1)
-        elif test_option.id == 6:
-            sport_client.SwitchGait(1)
-        elif test_option.id == 8:
-            sport_client.RecoveryStand()
-        elif test_option.id == 9:
-            sport_client.BalanceStand()
+        if test_option.id is not None:
+            execute_option(sport_client, test_option)
 
         time.sleep(1)
