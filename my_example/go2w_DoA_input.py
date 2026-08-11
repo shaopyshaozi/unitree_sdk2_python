@@ -3,11 +3,11 @@ import sys
 import time
 
 from unitree_sdk2py.core.channel import ChannelFactoryInitialize, ChannelSubscriber
-from unitree_sdk2py.idl.unitree_go.msg.dds_ import SportModeState_
+from unitree_sdk2py.idl.unitree_go.msg.dds_ import LowState_
 from unitree_sdk2py.go2.sport.sport_client import SportClient
 
 
-TOPIC_HIGHSTATE = "rt/sportmodestate"
+TOPIC_LOWSTATE = "rt/lowstate"
 ROTATE_SPEED = 0.3
 YAW_TOLERANCE_DEG = 5.0
 CONTROL_INTERVAL = 0.05
@@ -17,10 +17,10 @@ MAX_ROTATE_TIME = 20.0
 class RobotYawReader:
     def __init__(self):
         self.latest_state = None
-        self.subscriber = ChannelSubscriber(TOPIC_HIGHSTATE, SportModeState_)
-        self.subscriber.Init(self.high_state_handler, 10)
+        self.subscriber = ChannelSubscriber(TOPIC_LOWSTATE, LowState_)
+        self.subscriber.Init(self.low_state_handler, 10)
 
-    def high_state_handler(self, msg: SportModeState_):
+    def low_state_handler(self, msg: LowState_):
         self.latest_state = msg
 
     def get_robot_yaw(self):
@@ -48,8 +48,13 @@ def wrap_degrees(angle):
 def rotate_to_doa(sport_client, yaw_reader, speaker_doa):
     start_yaw = yaw_reader.wait_for_yaw()
     if start_yaw is None:
-        print("No robot yaw received. Check the network interface and SportModeState topic.")
+        print("No robot yaw received. Check the network interface and LowState topic.")
         return False
+
+    print("Preparing BalanceStand before rotation.")
+    balance_code = sport_client.BalanceStand()
+    print(f"BalanceStand return code: {balance_code}")
+    time.sleep(1.0)
 
     target_yaw = wrap_degrees(start_yaw + speaker_doa)
     start_time = time.time()
@@ -85,7 +90,8 @@ def rotate_to_doa(sport_client, yaw_reader, speaker_doa):
         sport_client.StopMove()
 
     print("Target reached. Stopping and running Dance1.")
-    sport_client.Dance1()
+    dance_code = sport_client.Dance1()
+    print(f"Dance1 return code: {dance_code}")
     return True
 
 
