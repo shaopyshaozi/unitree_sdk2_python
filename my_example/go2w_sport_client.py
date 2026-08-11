@@ -14,12 +14,15 @@ class TestOption:
 
 option_list = [
     TestOption(name="damp", id=0),         
-    TestOption(name="stand up", id=1),     
-    TestOption(name="stand down", id=2),   
+    TestOption(name="stand_up", id=1),     
+    TestOption(name="stand_down", id=2),   
     TestOption(name="move", id=3),         
     TestOption(name="stop_move", id=4),    
-    TestOption(name="sit", id=5),   
-    TestOption(name="dance", id=6),   
+    TestOption(name="speed_level", id=5),  
+    TestOption(name="switch_gait", id=6),  
+    TestOption(name="get_state", id=7),    
+    TestOption(name="recovery", id=8),     
+    TestOption(name="balance", id=9)       
 ]
 
 class UserInterface:
@@ -85,9 +88,12 @@ if __name__ == "__main__":
         elif test_option.id == 4:
             sport_client.StopMove()
         elif test_option.id == 5:
-            sport_client.Sit()
+            sport_client.SpeedLevel(1)
         elif test_option.id == 6:
-            sport_client.Dance1()
-            
+            sport_client.SwitchGait(1)
+        elif test_option.id == 8:
+            sport_client.RecoveryStand()
+        elif test_option.id == 9:
+            sport_client.BalanceStand()
 
         time.sleep(1)
