@@ -17,12 +17,22 @@ option_list = [
     TestOption(name="damp", id=0),         
     TestOption(name="stand up", id=1),     
     TestOption(name="stand down", id=2),   
-    TestOption(name="sit", id=5),   
-    TestOption(name="dance", id=6),   
+    TestOption(name="stop move", id=3),    
+    TestOption(name="recovery stand", id=4),     
+    TestOption(name="balance stand", id=5),
+    TestOption(name="forward", id=6),
+    TestOption(name="backward", id=7),
+    TestOption(name="left", id=8),
+    TestOption(name="right", id=9),
+    TestOption(name="turn left", id=10),
+    TestOption(name="turn right", id=11),
 ]
 
 COMMAND_FILE_NAME = "command_input.txt"
 COMMAND_INTERVAL_SECONDS = 4
+MOVE_SPEED = 0.3
+SIDE_SPEED = 0.5
+TURN_SPEED = 0.5
 
 
 def normalize_line(line):
@@ -36,7 +46,9 @@ def find_option_in_line(line):
     if not normalized_line or normalized_line.startswith("#"):
         return None
 
-    for option in option_list:
+    sorted_options = sorted(option_list, key=lambda option: len(normalize_line(option.name)), reverse=True)
+
+    for option in sorted_options:
         normalized_option = normalize_line(option.name)
         if f" {normalized_option} " in f" {normalized_line} ":
             return option
@@ -45,16 +57,34 @@ def find_option_in_line(line):
 
 
 def execute_option(sport_client, test_option):
+    code = None
+
     if test_option.id == 0:
-        sport_client.Damp()
+        code = sport_client.Damp()
     elif test_option.id == 1:
-        sport_client.StandUp()
+        code = sport_client.StandUp()
     elif test_option.id == 2:
-        sport_client.StandDown()
+        code = sport_client.StandDown()
+    elif test_option.id == 3:
+        code = sport_client.StopMove()
+    elif test_option.id == 4:
+        code = sport_client.RecoveryStand()
     elif test_option.id == 5:
-        sport_client.Sit()
+        code = sport_client.BalanceStand()
     elif test_option.id == 6:
-        sport_client.Dance1()
+        code = sport_client.Move(MOVE_SPEED, 0, 0)
+    elif test_option.id == 7:
+        code = sport_client.Move(-MOVE_SPEED, 0, 0)
+    elif test_option.id == 8:
+        code = sport_client.Move(0, SIDE_SPEED, 0)
+    elif test_option.id == 9:
+        code = sport_client.Move(0, -SIDE_SPEED, 0)
+    elif test_option.id == 10:
+        code = sport_client.Move(0, 0, TURN_SPEED)
+    elif test_option.id == 11:
+        code = sport_client.Move(0, 0, -TURN_SPEED)
+
+    print(f"Return code: {code}")
 
 
 def get_command_file_path():

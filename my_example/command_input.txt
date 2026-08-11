@@ -1,10 +1,15 @@
 Please stand up when this line is read.
-After waiting, please sit calmly.
-Now try the dance command.
-Next, use stand down to lower the robot.
-Finally, switch to normal mode.
-Start another cycle with stand up.
-Hold position briefly, then sit again.
-Run dance one more time.
+This line is only narration and should not trigger anything.
+Now enter balance stand so velocity commands can work.
+Move forward for a short moment.
+Stop move before changing direction.
+The robot should ignore this random sentence.
+Turn left slowly.
+Stop move after the turn.
+Move backward briefly.
+Stop move again.
+Shift left carefully.
+Shift right carefully.
+Try recovery stand as a safe reset command.
 Prepare to rest with stand down.
 End the sequence safely with damp.
