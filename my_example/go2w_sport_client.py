@@ -28,6 +28,8 @@ option_list = [
     TestOption(name="lean forward", id=14),
     TestOption(name="lean back", id=15),
     TestOption(name="level body", id=16),
+    TestOption(name="dance 1", id=17),
+    TestOption(name="dance 2", id=18),
 ]
 
 MOVE_SPEED = 0.2
@@ -103,6 +105,10 @@ def execute_option(sport_client, test_option):
         code = sport_client.Euler(0, -PITCH_ANGLE, 0)
     elif test_option.id == 16:
         code = sport_client.Euler(0, 0, 0)
+    elif test_option.id == 17:
+        code = sport_client.Dance1()
+    elif test_option.id == 18:
+        code = sport_client.Dance2()
 
     print(f"Return code: {code}")
 
