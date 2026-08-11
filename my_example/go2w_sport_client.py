@@ -23,18 +23,19 @@ option_list = [
     TestOption(name="right", id=9),
     TestOption(name="turn left", id=10),
     TestOption(name="turn right", id=11),
-    TestOption(name="speed low", id=12),
-    TestOption(name="speed medium", id=13),
-    TestOption(name="lean forward", id=14),
-    TestOption(name="lean back", id=15),
-    TestOption(name="level body", id=16),
-    TestOption(name="dance 1", id=17),
-    TestOption(name="dance 2", id=18),
+    # TestOption(name="speed low", id=12),
+    # TestOption(name="speed medium", id=13),
+    # TestOption(name="lean forward", id=14),
+    # TestOption(name="lean back", id=15),
+    # TestOption(name="level body", id=16),
+    # TestOption(name="dance 1", id=17),
+    # TestOption(name="dance 2", id=18),
+    # TestOption(name="sit", id=19),
 ]
 
-MOVE_SPEED = 0.2
-SIDE_SPEED = 0.2
-TURN_SPEED = 0.3
+MOVE_SPEED = 0.3
+SIDE_SPEED = 0.5
+TURN_SPEED = 0.5
 PITCH_ANGLE = 0.15
 
 class UserInterface:
@@ -95,20 +96,22 @@ def execute_option(sport_client, test_option):
         code = sport_client.Move(0, 0, TURN_SPEED)
     elif test_option.id == 11:
         code = sport_client.Move(0, 0, -TURN_SPEED)
-    elif test_option.id == 12:
-        code = sport_client.SpeedLevel(0)
-    elif test_option.id == 13:
-        code = sport_client.SpeedLevel(1)
-    elif test_option.id == 14:
-        code = sport_client.Euler(0, PITCH_ANGLE, 0)
-    elif test_option.id == 15:
-        code = sport_client.Euler(0, -PITCH_ANGLE, 0)
-    elif test_option.id == 16:
-        code = sport_client.Euler(0, 0, 0)
-    elif test_option.id == 17:
-        code = sport_client.Dance1()
-    elif test_option.id == 18:
-        code = sport_client.Dance2()
+    # elif test_option.id == 12:
+    #     code = sport_client.SpeedLevel(0)
+    # elif test_option.id == 13:
+    #     code = sport_client.SpeedLevel(1)
+    # elif test_option.id == 14:
+    #     code = sport_client.Euler(0, PITCH_ANGLE, 0)
+    # elif test_option.id == 15:
+    #     code = sport_client.Euler(0, -PITCH_ANGLE, 0)
+    # elif test_option.id == 16:
+    #     code = sport_client.Euler(0, 0, 0)
+    # elif test_option.id == 17:
+    #     code = sport_client.Dance1()
+    # elif test_option.id == 18:
+    #     code = sport_client.Dance2()
+    # elif test_option.id == 19:
+    #     code = sport_client.Sit()
 
     print(f"Return code: {code}")
 
